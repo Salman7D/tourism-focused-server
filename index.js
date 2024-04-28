@@ -44,6 +44,18 @@ async function run() {
         res.send(result);
     })
 
+    app.get("/myProduct/:email", async(req, res) => {
+        console.log(req.params.email);
+        const result = await touristsSpotCollection.find({email: req.params.email}).toArray();
+        res.send(result);
+    })
+
+    app.get("/myAddedLists/:email", async(req, res) => {
+        console.log(req.params.email);
+        const result = await touristsSpotCollection.find({email: req.params.email}).toArray();
+        res.send(result);
+    })
+
     app.post("/touristsSpot", async(req, res) => {
         const newTouristsSpot = req.body;
         console.log(newTouristsSpot);
@@ -80,7 +92,7 @@ async function run() {
     })
 
 
-    app.delete("/touristsSpot/:id", async(req, res) => {
+    app.delete("/delete/:id", async(req, res) => {
         const id = req.params.id;
         const query = {
             _id: new ObjectId(id)
