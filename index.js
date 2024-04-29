@@ -56,6 +56,11 @@ async function run() {
         res.send(result);
     })
 
+    app.get("/singleProduct/:id", async(req, res) => {
+        const result = await touristsSpotCollection.findOne({_id: new ObjectId(req.params.id)})
+        res.send(result);
+    })
+
     app.post("/touristsSpot", async(req, res) => {
         const newTouristsSpot = req.body;
         console.log(newTouristsSpot);
@@ -63,31 +68,28 @@ async function run() {
         res.send(result);
     })
 
-    app.put("/touristsSpot/:id", async(req, res) => {
-        const id = req.params.id;
-        const filter = {
-            _id: new ObjectId(id)
+    app.put("/updateProduct/:id", async(req, res) => {
+           console.log(req.params.id);
+        
+        const query = {
+            _id: new ObjectId(req.params.id)
         }
-        const options = {
-            upsert: true
-        }
-        const updatedSpot = req.body
 
-        const spot = {
+        const data = {
             $set: {
-                spot_name: updatedSpot.spot_name, 
-                country_Name: updatedSpot.country_Name, 
-                location: updatedSpot.location, 
-                description: updatedSpot.description, 
-                average_cost: updatedSpot.average_cost, 
-                seasonality: updatedSpot.seasonality, 
-                travel_time: updatedSpot.travel_time,
-                totalVisitors: updatedSpot.totalVisitors,
-                photo: updatedSpot.photo
+                spot_name: req.body.spot_name, 
+                country_Name: req.body.country_Name, 
+                location: req.body.location, 
+                description: req.body.description, 
+                average_cost: req.body.average_cost, 
+                seasonality: req.body.seasonality, 
+                travel_time: req.body.travel_time,
+                totalVisitors: req.body.totalVisitors,
+                photo: req.body.photo
             }
         }
 
-        const result = await touristsSpotCollection.updateOne(filter, spot, options);
+        const result = await touristsSpotCollection.updateOne(query, data);
         res.send(result);
     })
 
